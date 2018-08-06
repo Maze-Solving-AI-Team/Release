@@ -268,11 +268,6 @@ screen = pygame.display.set_mode((width,height))
 background = pygame.image.load(maze).convert()
 newscreen = pygame.transform.scale(background, (width, height))
 
-skipscreen = pygame.transform.scale(background, (width, height))
-skip = pygame.image.load('skip.png')
-skipscreen.blit(skip,(0,0))
-pygame.display.update()
-
 #Colors
 color = (0, 188, 0)
 white = (255, 255, 255)
@@ -543,11 +538,6 @@ screen = pygame.display.set_mode((width,height))
 background = pygame.image.load(maze).convert()
 newscreen = pygame.transform.scale(background, (width, height))
 
-skipscreen = pygame.transform.scale(background, (width, height))
-skip = pygame.image.load('skip.png')
-skipscreen.blit(skip,(0,0))
-pygame.display.update()
-
 #Colors
 color = (0, 188, 0)
 white = (255, 255, 255)
@@ -718,11 +708,7 @@ height = img.height * change
 screen = pygame.display.set_mode((width,height))
 background = pygame.image.load(maze).convert()
 newscreen = pygame.transform.scale(background, (width, height))
-'''
-skip = pygame.image.load('skip.png')
-newscreen.blit(skip,(0,0))
-pygame.display.update()
-'''
+
 #Colors
 color = (0, 188, 0)
 white = (255, 255, 255, 255)
@@ -978,11 +964,7 @@ height = img.height * change
 screen = pygame.display.set_mode((width,height))
 background = pygame.image.load(maze).convert()
 newscreen = pygame.transform.scale(background, (width, height))
-'''
-skip = pygame.image.load('skip.png')
-newscreen.blit(skip,(0,0))
-pygame.display.update()
-'''
+
 sleepTime = sleep
 #number of turns
 upCount = 0
