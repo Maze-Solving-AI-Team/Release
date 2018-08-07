@@ -29,6 +29,10 @@ blue = (0, 0, 255)
 red = (255, 0, 0, 100)
 green = (0, 188, 0)
 
+pygame.mixer.init()
+pygame.mixer.music.load('MSAI.ogg')
+pygame.mixer.music.play(loops=-1)
+
 #================================GUI===================================
 # Display background image
 pygame.font.init()
