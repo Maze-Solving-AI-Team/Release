@@ -491,22 +491,15 @@ while 0 != currentY and skipPriorities == False:
     if direction == 1:#up
         up(blue)
         stepCounterPriorities += 1
-        print("priorities-up",direction)#delete this
     elif direction == 2:
         right(blue)
         stepCounterPriorities += 1
-        print("priorities-right",direction)#delete this
-
     elif direction == 3:
         left(blue)
         stepCounterPriorities += 1
-        print("priorities-left",direction)#delete this
-
     elif direction == 4:
         down(blue)
         stepCounterPriorities += 1
-        print("priorities-down",direction)#delete this
-
     for event in pygame.event.get():
         # This lets you quit by pressing the X button of the window.
         if event.type == pygame.QUIT:
@@ -523,7 +516,6 @@ while 0 != currentY and skipPriorities == False:
 timePriorities = datetime.now() - start
 pygame.image.save(newscreen,'temp.png')
 time.sleep(1)
-
 
 #================RIGHT TURN SCREEN==============
 background = pygame.image.load('rightturn.png').convert()
@@ -1725,17 +1717,6 @@ while 0 != currentY and skipIntersection==False:
                 x,y = pygame.mouse.get_pos()
                 if 415 <= x <= 532 and 494 <= y <= 532:
                     skipIntersection = True
-    #-print("direction-main", direction)
-                '''
-    print("front-",upCount)
-    print("left-",leftCount)
-    print("right-",rightCount)
-    print("-------")
-    '''
-
-#print("FRONT PATH CHOSEN",upCount,"TIMES")
-#print("LEFT PATH CHOSEN",leftCount,"TIMES")
-#print("RIGHT PATH CHOSEN",rightCount,"TIMES")
 
 for z in range(0,intersectionNum):
     stepCounterIntersection += 1
