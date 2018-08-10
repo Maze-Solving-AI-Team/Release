@@ -280,6 +280,8 @@ blue = (0, 0, 255)
 red = (255, 0, 0)
 green = (0, 188, 0)
 
+stepCounterPriorities = 0
+
 pix = img.load()
 list = []
 
@@ -329,7 +331,7 @@ def moveDown(x, y, blocksize, newcolor, sleep):
     currentX = x
     time.sleep(sleep)
     
-# Function to move left  
+# Function to move left
 def moveLeft(x, y, blocksize, newcolor, sleep):
     pygame.draw.rect(newscreen, newcolor, pygame.Rect(x, y, blocksize, blocksize))
     pygame.draw.rect(newscreen, color, pygame.Rect(x - blocksize, y, blocksize, blocksize))
@@ -354,163 +356,212 @@ def moveRight(x, y, blocksize, newcolor, sleep):
     time.sleep(sleep)
 
 #Initialization of currentX and currentY
-def varsInit(x, y):
+def varsInit(x, y, steps):
     global currentX
     global currentY
     global direction
+    global stepCounterPriorities
+    stepCounterPriorities = steps
     currentX = x
     currentY = y
     direction = 1
+    stepCounterPriorities += 6
 
 #Algorithm to determine direction to move if facing up
-def up(replace):
+def up(replace, steps):
     global direction
+    global stepCounterPriorities
+    stepCounterPriorities = steps
     if newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
         direction = 2
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
         direction = 1
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
         direction = 3
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
         direction = 4
+        stepCounterPriorities += 3
     else:
         if newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
             moveLeft(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 3
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
             moveDown(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 4
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
             moveRight(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 2
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX, currentY - blockSize)) == blue:#up        
             moveUp(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 1
+            stepCounterPriorities += 3
     
 #Algorithm to determine direction to move if facing right
-def right(replace):
+def right(replace, steps):
     global direction
+    global stepCounterPriorities
+    stepCounterPriorities = steps
     if newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
         direction = 4
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
         direction = 2
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
         direction = 1
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
         direction = 3
+        stepCounterPriorities += 3
     else:
         if newscreen.get_at((currentX, currentY - blockSize)) == blue:#up        
             moveUp(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 1
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
             moveLeft(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 3
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
             moveDown(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 4
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
             moveRight(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 2
+            stepCounterPriorities += 3
 
 #Algorithm to determine direction to move if facing left
-def left(replace):
+def left(replace, steps):
     global direction
+    global stepCounterPriorities
+    stepCounterPriorities = steps
     if newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
         direction = 1
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
         direction = 3
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
         direction = 4
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
         direction = 2
+        stepCounterPriorities += 3
     else:
         if newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
             moveDown(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 4
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
             moveRight(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 2
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX, currentY - blockSize)) == blue:#up        
             moveUp(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 1
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
             moveLeft(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 3
+            stepCounterPriorities += 3
 
 #Algorithm to determine direction to move if facing down
-def down(replace):
+def down(replace, steps):
     global direction
+    global stepCounterPriorities
+    stepCounterPriorities = steps
     if newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
         direction = 3
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
         direction = 4
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
         direction = 2
+        stepCounterPriorities += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
         direction = 1
+        stepCounterPriorities += 3
     else:
+        stepCounterPriorities += 1
         if newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
             moveRight(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 2
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX, currentY - blockSize)) == blue:#up        
             moveUp(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 1
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
             moveLeft(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 3
+            stepCounterPriorities += 3
         elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
             moveDown(currentX, currentY, blockSize, (0,255,255), sleep)
             direction = 4
+            stepCounterPriorities += 3
 
 start = datetime.now()
 
-varsInit(xvalueOfStart, yvalueOfStart)
+varsInit(xvalueOfStart, yvalueOfStart, stepCounterPriorities)
 
 moveUp(currentX, currentY, blockSize, blue, sleep)
-
-stepCounterPriorities = 0
+stepCounterPriorities += 1
 skipPriorities = False
 while 0 != currentY and skipPriorities == False:    
     pygame.event.get()
+    stepCounterPriorities += 2
     if direction == 1:#up
-        up(blue)
         stepCounterPriorities += 1
+        up(blue, stepCounterPriorities)
     elif direction == 2:
-        right(blue)
         stepCounterPriorities += 1
+        right(blue, stepCounterPriorities)
     elif direction == 3:
-        left(blue)
         stepCounterPriorities += 1
+        left(blue, stepCounterPriorities)
     elif direction == 4:
-        down(blue)
         stepCounterPriorities += 1
+        down(blue, stepCounterPriorities)
     for event in pygame.event.get():
+        stepCounterPriorities += 1        
         # This lets you quit by pressing the X button of the window.
         if event.type == pygame.QUIT:
+            stepCounterPriorities += 1
             pygame.display.quit()
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONUP:
+            stepCounterPriorities += 1
             if event.button == 1:  # 1 = left mouse button, 2 = middle, 3 = right.
+                stepCounterPriorities += 1
                 x,y = pygame.mouse.get_pos()
                 # Skip button
                 if 415 <= x <= 532 and 494 <= y <= 532:
+                    stepCounterPriorities += 1
                     skipPriorities = True
                     
 timePriorities = datetime.now() - start
@@ -540,6 +591,8 @@ white = (255, 255, 255)
 blue = (0, 0, 255)
 red = (255, 0, 0)
 green = (0, 188, 0)
+
+stepCounterRightTurn = 0
 
 # Recognizing black/white
 size = [img.size]
@@ -575,113 +628,144 @@ pygame.display.update()
 time.sleep(0.1)
 
 #Initialization of currentX and currentY
-def varsInit (x, y):
+def varsInit (x, y, steps):
     global currentX
     global currentY
     global direction
+    global stepCounterRightTurn
+    stepCounterRightTurn = steps
     currentX = x
     currentY = y
     direction = 1
+    stepCounterRightTurn += 6
 
 #Algorithm to determine direction to move if facing up
-def up(replace):
+def up(replace, steps):
     global direction
+    global stepCounterRightTurn
+    stepCounterRightTurn = steps
     if newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 2
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 1
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 3
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 4
+        stepCounterRightTurn += 3
     
 #Algorithm to determine direction to move if facing right
-def right(replace):
+def right(replace, steps):
     global direction
+    global stepCounterRightTurn
+    stepCounterRightTurn = steps
     if newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 4
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 2
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 1
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 3
+        stepCounterRightTurn += 3
     
 #Algorithm to determine direction to move if facing left
-def left(replace):
+def left(replace, steps):
     global direction
+    global stepCounterRightTurn
+    stepCounterRightTurn = steps
     if newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 1
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 3
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 4
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 2
+        stepCounterRightTurn += 3
 
 #Algorithm to determine direction to move if facing down
-def down(replace):
+def down(replace, steps):
     global direction
+    global stepCounterRightTurn
+    stepCounterRightTurn = steps
     if newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 3
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 4
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 2
+        stepCounterRightTurn += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep+0.005)
         direction = 1
+        stepCounterRightTurn += 3
 
 start = datetime.now()
 
-varsInit(xvalueOfStart, yvalueOfStart)
+varsInit(xvalueOfStart, yvalueOfStart, stepCounterRightTurn)
 
 moveUp(currentX, currentY, blockSize, white, sleep+0.005)
-
-stepCounterRightTurn = 0
+stepCounterRightTurn += 1
 
 skipRightTurn = False
 #original
 while 0 != currentY and skipRightTurn == False:
-    stepCounterRightTurn += 1
+    stepCounterRightTurn += 2
     pygame.event.get()
     if direction == 1:#up
-        up(white)
-        stepCounterRightTurn += 1
+        stepCounterPriorities += 1
+        up(white, stepCounterRightTurn)
     elif direction == 2:
-        right(white)
-        stepCounterRightTurn += 1
+        stepCounterPriorities += 1
+        right(white, stepCounterRightTurn)
     elif direction == 3:
-        left(white)
         stepCounterRightTurn += 1
+        left(white, stepCounterRightTurn)
     elif direction == 4:
-        down(white)
         stepCounterRightTurn += 1
+        down(white, stepCounterRightTurn)
     for event in pygame.event.get():
+        stepCounterRightTurn += 1
         # This lets you quit by pressing the X button of the window.
         if event.type == pygame.QUIT:
+            stepCounterRightTurn += 1
             pygame.display.quit()
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONUP:
+            stepCounterRightTurn += 1       
             if event.button == 1:  # 1 = left mouse button, 2 = middle, 3 = right.
+                stepCounterRightTurn += 1
                 x,y = pygame.mouse.get_pos()
                 if 415 <= x <= 532 and 494 <= y <= 532:
+                    stepCounterRightTurn += 1
                     skipRightTurn = True
 
 timeRightTurn = datetime.now() - start
@@ -712,6 +796,8 @@ black = (0, 0, 0, 255)
 blue = (0, 255, 255, 255)
 red = (255, 0, 0)
 green = (0, 255, 0, 255)
+
+stepCounterDeadEnd = 0
 
 # Recognizing black/white
 size = [img.size]
@@ -803,61 +889,89 @@ def moveRight(x, y, blocksize, newcolor, sleep):
     time.sleep(sleep)
 
 #Initialization of currentX and currentY
-def varsInit(x, y):
+def varsInit(x, y, steps):
     global currentX
     global currentY
     global direction
+    global stepCounterDeadEnd
+    stepCounterDeadEnd = steps
     currentX = x
     currentY = y
     direction = 1
+    stepCounterDeadEnd += 6
 
 #Function to determine direction to move if facing up
-def up(replace):
+def up(replace, steps):
+    global stepCounterDeadEnd
+    stepCounterDeadEnd = steps
     if newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
+
     
 #Function to determine direction to move if facing right
-def right(replace):
+def right(replace, steps):
+    global stepCounterDeadEnd
+    stepCounterDeadEnd = steps
     if newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     
 #Function to determine direction to move if facing left
-def left(replace):
+def left(replace, steps):
+    global stepCounterDeadEnd
+    stepCounterDeadEnd = steps
     if newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
 
 #Function to determine direction to move if facing down
-def down(replace):
+def down(replace, steps):
+    global stepCounterDeadEnd
+    stepCounterDeadEnd = steps
     if newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace, sleep)
+        stepCounterDeadEnd += 2
 
 start = datetime.now()
 
-varsInit(xvalueOfStart, yvalueOfStart)
+varsInit(xvalueOfStart, yvalueOfStart, stepCounterDeadEnd)
 
 direction = 1
 currentX = blockSize
@@ -866,68 +980,84 @@ whiteListX = []
 whiteListY = []
 deadEnds = 1
 
+stepCounterDeadEnd += 6
+
 #-------------DEAD END FILLER------------
-stepCounterDeadEnd = 0
 while deadEnds != 0:
     pygame.event.get()
     #Define variables
     deadEnds = 0
     intersection = 0
     #Check the color of each and add location to list if white
+    stepCounterDeadEnd += 3
     while currentY <= (height - blockSize):
         getCur = newscreen.get_at((currentX, currentY))
+        stepCounterDeadEnd += 2
         if getCur == white:
             whiteListX.append(currentX)
             whiteListY.append(currentY)
+            stepCounterDeadEnd += 3
         currentX = currentX + blockSize
+        stepCounterDeadEnd += 1
         if currentX >= (width - blockSize + 1):
             currentX = 0
             currentY = currentY + blockSize
+            stepCounterDeadEnd += 3
     whiteListLength = len(whiteListX)
+    stepCounterDeadEnd += 1
     #Determine if each white space is a deadend
     for x in range (0, whiteListLength):
         count = 0
+        stepCounterDeadEnd += 1
         if newscreen.get_at((whiteListX[x], whiteListY[x])) != white or newscreen.get_at((whiteListX[x] - blockSize, whiteListY[x])) == black or newscreen.get_at((whiteListX[x] - blockSize, whiteListY[x])) == blue:
             count = count + 1
+            stepCounterDeadEnd += 2
         if newscreen.get_at((whiteListX[x], whiteListY[x])) != white or newscreen.get_at((whiteListX[x] + blockSize, whiteListY[x])) == black or newscreen.get_at((whiteListX[x] + blockSize, whiteListY[x])) == blue:
             count = count + 1
+            stepCounterDeadEnd += 2
         if newscreen.get_at((whiteListX[x], whiteListY[x])) != white or newscreen.get_at((whiteListX[x], whiteListY[x] - blockSize)) == black or newscreen.get_at((whiteListX[x], whiteListY[x] - blockSize)) == blue:
             count = count + 1
+            stepCounterDeadEnd += 2
         if newscreen.get_at((whiteListX[x], whiteListY[x])) != white or newscreen.get_at((whiteListX[x], whiteListY[x] + blockSize)) == black or newscreen.get_at((whiteListX[x], whiteListY[x] + blockSize)) == blue:
             count = count + 1
+            stepCounterDeadEnd += 2
         if count == 3:
             deadEnds = deadEnds + 1
             pygame.draw.rect(newscreen, blue, pygame.Rect(whiteListX[x], whiteListY[x], blockSize, blockSize))
-            stepCounterDeadEnd += 1
+            stepCounterDeadEnd += 3
         if count < 3:
             intersection == 1
+            stepCounterDeadEnd += 2
     #Break the while loop once all dead ends are filled
     if deadEnds == intersection:
+        stepCounterDeadEnd += 1
         break
 
     screen.blit(newscreen, (0,0))
     pygame.display.update()
+    stepCounterDeadEnd += 2
 
-varsInit(xvalueOfStart, yvalueOfStart)
+varsInit(xvalueOfStart, yvalueOfStart, stepCounterDeadEnd)
 
 moveUp(currentX, currentY, blockSize, white, sleep)
-
+stepCounterDeadEnd += 1
 skipDeadEnd = False
 #Right turn movement through the solution
 while 0 != currentY and skipDeadEnd == False:
+    stepCounterDeadEnd += 2
     pygame.event.get()
     if direction == 1:#up
-        up(white)
         stepCounterDeadEnd += 1
+        up(white, stepCounterDeadEnd)
     elif direction == 2:
-        right(white)
         stepCounterDeadEnd += 1
+        right(white, stepCounterDeadEnd)
     elif direction == 3:
-        left(white)
         stepCounterDeadEnd += 1
+        left(white, stepCounterDeadEnd)
     elif direction == 4:
-        down(white)
         stepCounterDeadEnd += 1
+        down(white, stepCounterDeadEnd)
     for event in pygame.event.get():
         # This lets you quit by pressing the X button of the window.
         if event.type == pygame.QUIT:
@@ -952,6 +1082,7 @@ pygame.display.update()
 time.sleep(2)
 
 #===========================Intersection===============================
+
 # Initialize
 img = Image.open(maze)
 change = 3
@@ -960,8 +1091,43 @@ height = img.height * change
 screen = pygame.display.set_mode((width,height))
 background = pygame.image.load(maze).convert()
 newscreen = pygame.transform.scale(background, (width, height))
-
 sleepTime = sleep
+stepCounterIntersection = 0
+
+#set upMem,leftMem,rightMem to values from memory(pathCount.txt)
+resetMem=False
+upMem=0
+leftMem=0
+rightMem=0
+y=0
+stepCounterIntersection += 5
+    #if memory needs to be reset, then set memory to 0 up, 0 left, 0 right
+if resetMem:
+    f = open('pathCount.txt','w')
+    f.write("0U0L0R")
+    f.close
+    stepCounterIntersection += 4
+    #set memory to pathCount.txt
+f = open('pathCount.txt','r')
+memory = f.read()
+f.close
+stepCounterIntersection += 3
+    #set memory values to values in memory(pathCount.txt)
+for z in range(len(memory)):
+    stepCounterIntersection += 1
+    if memory[z]=='U':
+        upMem=int(memory[y:z])
+        y=z+1
+        stepCounterIntersection += 2
+    elif memory[z]=='L':
+        leftMem=int(memory[y:z])
+        y=z+1
+        stepCounterIntersection += 2
+    elif memory[z]=='R':
+        rightMem=int(memory[y:z])
+        stepCounterIntersection += 2
+
+
 #number of turns
 upCount = 0
 leftCount = 0
@@ -1056,656 +1222,875 @@ def moveRight(x, y, blocksize, newcolor):
     currentY = y
 
 #Initialization of currentX and currentY
-def varsInit(x, y):
+def varsInit(x, y, steps):
     global currentX
     global currentY
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     currentX = x
     currentY = y
     direction = 1
+    stepCounterIntersection += 6
 
 #Algorithm to determine direction to move if facing up
-def up(replace):
+def up(replace, steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     if newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("up-Move up called")
         time.sleep(sleepTime)
         direction = 1
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace)
-        #-print("up-Move right called")
         time.sleep(sleepTime)
         direction = 2
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("up-Move left called")
         time.sleep(sleepTime)
         direction = 3
+        stepCounterIntersection += 3
         #check for blue paths
     elif newscreen.get_at((currentX,currentY-blockSize))==blue:
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("up-Move up blue called")
         time.sleep(sleepTime)
         direction = 1
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX+blockSize,currentY))==blue:
-        #-print("up-Move right blue called")
         time.sleep(sleepTime)
         direction = 2
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX-blockSize,currentY))==blue:
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("up-Move left blue called")
         time.sleep(sleepTime)
         direction = 3
+        stepCounterIntersection += 3
         #check rear
     elif newscreen.get_at((currentX, currentY + blockSize)) == white or newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("up-Move down called")
         time.sleep(sleepTime)
         direction = 4
-    #-print("direction-up", direction)
+        stepCounterIntersection += 3
     
 #Algorithm to determine direction to move if facing right
-def right(replace):
+def right(replace, steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     if newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace)
-        #-print("right-Move right called")
         time.sleep(sleepTime)
         direction = 2
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("right-Move down called")
         time.sleep(sleepTime)
         direction = 4
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up        
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("right-Move up called")
         time.sleep(sleepTime)
         direction = 1
+        stepCounterIntersection += 3
     #check blue
     elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
         moveRight(currentX, currentY, blockSize, replace)
-        #-print("right-Move right blue called")
         time.sleep(sleepTime)
         direction = 2
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("right-Move down called")
         time.sleep(sleepTime)
         direction = 4
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == blue:#up        
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("right-Move up blue called")
         time.sleep(sleepTime)
         direction = 1
+        stepCounterIntersection += 3
     #check rear
     elif newscreen.get_at((currentX - blockSize, currentY)) == white or newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("right-Move left called")
         time.sleep(sleepTime)
         direction = 3
-    #-print("direction-right", direction)
+        stepCounterIntersection += 3
     
 #Algorithm to determine direction to move if facing left
-def left(replace):
+def left(replace, steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     if newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("left-Move left called")
         time.sleep(sleepTime)
         direction = 3
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("left-Move up called")
         time.sleep(sleepTime)
         direction = 1
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down        
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("left-Move down called")
         time.sleep(sleepTime)
         direction = 4
+        stepCounterIntersection += 3
         #check blue
     elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("left-Move left blue called")
         time.sleep(sleepTime)
         direction = 3
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY - blockSize)) == blue:#up
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("left-Move up blue called")
         time.sleep(sleepTime)
         direction = 1
+        stepCounterIntersection += 3
     elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down        
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("left-Move down blue called")
         time.sleep(sleepTime)
         direction = 4
+        stepCounterIntersection += 3
         #check rear
     elif newscreen.get_at((currentX + blockSize, currentY)) == white or newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
         moveRight(currentX, currentY, blockSize, replace)
-        #-print("left-Move right called")
         time.sleep(sleepTime)
         direction = 2
-    #-print("direction-left", direction)
+        stepCounterIntersection += 3
 
 #Algorithm to determine direction to move if facing down
-def down(replace):
+def down(replace, steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     if newscreen.get_at((currentX, currentY + blockSize)) == white:#down
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("down-Move down called")
         time.sleep(sleepTime)
         direction = 4
+        stepCounterIntersection += 4
     elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("down-Move left called")
         time.sleep(sleepTime)
         direction = 3
+        stepCounterIntersection += 4
     elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
         moveRight(currentX, currentY, blockSize, replace)
-        #-print("down-Move right called")
         time.sleep(sleepTime)
         direction = 2
+        stepCounterIntersection += 4
         #check blue
     elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
         moveDown(currentX, currentY, blockSize, replace)
-        #-print("down-Move down blue called")
         time.sleep(sleepTime)
         direction = 4
+        stepCounterIntersection += 4
     elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
         moveLeft(currentX, currentY, blockSize, replace)
-        #-print("down-Move left blue called")
         time.sleep(sleepTime)
         direction = 3
+        stepCounterIntersection += 4
     elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
         moveRight(currentX, currentY, blockSize, replace)
-        #-print("down-Move right blue called")
         time.sleep(sleepTime)
         direction = 2
+        stepCounterIntersection += 4
         #check rear
     elif newscreen.get_at((currentX, currentY - blockSize)) == white or newscreen.get_at((currentX, currentY - blockSize)) == blue:#up        
         moveUp(currentX, currentY, blockSize, replace)
-        #-print("down-Move up called")
         time.sleep(sleepTime)
         direction = 1
-    #-print("direction-down", direction)
+        stepCounterIntersection += 4
 
 #returns boolean if current tile is intersection
-def isIntersection():
+def isIntersection(steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     paths = 0 
-    #-print("isIntersection")
+    stepCounterIntersection += 2
     if newscreen.get_at((currentX, currentY - blockSize)) == white or newscreen.get_at((currentX, currentY - blockSize)) == red or newscreen.get_at((currentX, currentY - blockSize)) == green or newscreen.get_at((currentX, currentY - blockSize)) == blue:
         paths = paths + 1
-        #-print("returnUp")
+        stepCounterIntersection += 2
     if newscreen.get_at((currentX - blockSize, currentY)) == white or newscreen.get_at((currentX - blockSize, currentY)) == red or newscreen.get_at((currentX - blockSize, currentY)) == green or newscreen.get_at((currentX - blockSize, currentY)) == blue:
         paths = paths + 1
-        #-print("returnLeft")
+        stepCounterIntersection += 2
     if newscreen.get_at((currentX + blockSize, currentY)) == white or newscreen.get_at((currentX + blockSize, currentY)) == red or newscreen.get_at((currentX + blockSize, currentY)) == green or newscreen.get_at((currentX + blockSize, currentY)) == blue:
         paths = paths + 1
-        #-print("returnRight")
+        stepCounterIntersection += 2
     if  newscreen.get_at((currentX, currentY + blockSize)) == white or newscreen.get_at((currentX, currentY + blockSize)) == red or newscreen.get_at((currentX, currentY + blockSize)) == green or newscreen.get_at((currentX, currentY + blockSize)) == blue:
         paths = paths + 1
-        #-print("returnDown")
-    #-print("direction-isIntersection", direction)
+        stepCounterIntersection += 2
     
     if paths > 2:
-        #-print(paths)
-        #-print("isIntersection-TRUE")
         return True
+        stepCounterIntersection += 2
     else:
-        #-print(paths)
-        #-print("isIntersection-FALSE")
         return False
+        stepCounterIntersection += 2
 
-varsInit(xvalueOfStart, yvalueOfStart)
+varsInit(xvalueOfStart, yvalueOfStart, stepCounterIntersection)
 
 moveUp(currentX, currentY, blockSize, white)
 
 direction = 1
-
-def checkSurround(color):#returns direction or 0 if no color present on intersection paths
+stepCounterIntersection += 2
+def checkSurround(color, steps):#returns direction or 0 if no color present on intersection paths
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
     paths=0
     x=0
+    stepCounterIntersection += 3
     if newscreen.get_at((currentX, currentY - blockSize)) == color:#up
-        #direction = 4
-        #-print("checkRed-red up-AI faces down")#debug
         paths+=1
         x=1
+        stepCounterIntersection += 2
     if newscreen.get_at((currentX + blockSize, currentY)) == color:#right
-        #direction = 3
-        #-print("checkRed-red right-AI faces left")#debug
         paths+=1
         x=2
+        stepCounterIntersection += 2
     if newscreen.get_at((currentX - blockSize, currentY)) == color:#left
-        #direction = 2
-        #-print("checkRed-red left-AI faces right")#debug
         paths+=1
         x=3
+        stepCounterIntersection += 2
     if newscreen.get_at((currentX,currentY+blockSize))==color:#down
-        #direction = 1
-        #-print("checkRed-red down-AI faces up")#debug
         paths+=1
         x=4
+        stepCounterIntersection += 2
     if paths>1:
         x=5
-    #-print("checkRed-no red present")#debug
+        stepCounterIntersection += 1
     return x
-    #-print("direction-checkRed", direction)
 
-def addCount(isInt,directionMove,firstTime):
+def addCount(isInt,directionMove,firstTime, steps):
     global direction,rightCount,upCount,leftCount
-    #direction=direction coming into intersection
-    #directionMove=direction leaving intersection
+    global stepCounterIntersection
+    stepCounterIntersection = steps
+    stepCounterIntersection += 4
     if isInt:
-        #-print("addCount-isIntersection-TRUE")#debug
-        #-print("addCount-checkRed output",checkSurround(red))
-        if checkSurround(red)==4:#AI faces up
-            #-print("addCount-AI up")#debug
+        stepCounterIntersection += 1
+        if checkSurround(red, stepCounterIntersection)==4:#AI faces up
+            stepCounterIntersection += 1
             if directionMove==1:#up
                 upCount+=1
+                stepCounterIntersection += 2
             if directionMove==3:#left
                 leftCount+=1
+                stepCounterIntersection += 2
             if directionMove==2:#right
                 rightCount+=1
+                stepCounterIntersection += 2
             if direction==4:#AI comes from top
                 upCount-=1
+                stepCounterIntersection += 2
             if direction==3:#AI comes from right
                 rightCount-=1
+                stepCounterIntersection += 2
             if direction==2:#AI comes from left
                 leftCount-=1
-        if checkSurround(red)==3:#AI faces right
-            #-print("addCount-AI right")#debug
+                stepCounterIntersection += 2
+        if checkSurround(red, stepCounterIntersection)==3:#AI faces right
+            stepCounterIntersection += 1
             if directionMove==2:#right
                 upCount+=1
+                stepCounterIntersection += 2
             if directionMove==1:#up
                 leftCount+=1
+                stepCounterIntersection += 2
             if directionMove==4:#down
                 rightCount+=1
+                stepCounterIntersection += 2
             if direction==3:#AI comes from right
                 upCount-=1
+                stepCounterIntersection += 2
             if direction==1:#AI comes from bottom
                 rightCount-=1
+                stepCounterIntersection += 2
             if direction==4:#AI comes from top
                 leftCount-=1
-        if checkSurround(red)==2:#AI faces left
-            #-print("addCount-AI left")#debug
+                stepCounterIntersection += 2
+        if checkSurround(red, stepCounterIntersection)==2:#AI faces left
+            stepCounterIntersection += 1
             if directionMove==3:#left
                 upCount+=1
+                stepCounterIntersection += 2
             if directionMove==4:#down
                 leftCount+=1
+                stepCounterIntersection += 2
             if directionMove==1:#up
                 rightCount+=1
+                stepCounterIntersection += 2
             if direction==2:#AI comes from left
                 upCount-=1
+                stepCounterIntersection += 2
             if direction==4:#AI comes from top
                 rightCount-=1
+                stepCounterIntersection += 2
             if direction==1:#AI comes from bottom
                 leftCount-=1
-        if checkSurround(red)==1:#AI faces down
-            #-print("addCount-AI down")#debug
+                stepCounterIntersection += 2
+        if checkSurround(red, stepCounterIntersection)==1:#AI faces down
+            stepCounterIntersection += 1
             if directionMove==4:#down
                 upCount+=1
+                stepCounterIntersection += 2
             if directionMove==2:#right
                 leftCount+=1
+                stepCounterIntersection += 2
             if directionMove==3:#left
                 rightCount+=1
+                stepCounterIntersection += 2
             if direction==1:#AI comes from bottom
                 upCount-=1
+                stepCounterIntersection += 2
             if direction==2:#AI comes from left
                 rightCount-=1
+                stepCounterIntersection += 2
             if direction==3:#AI comes from right
                 leftCount-=1
+                stepCounterIntersection += 2
         #check blue
-        if checkSurround(red)==0:
-            if checkSurround(blue)==4:#AI faces up
-                #-print("addCount-AI up")#debug
+        if checkSurround(red, stepCounterIntersection)==0:
+            stepCounterIntersection += 1
+            if checkSurround(blue, stepCounterIntersection)==4:#AI faces up
+                stepCounterIntersection += 1
                 if directionMove==1:#up
                     upCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==3:#left
                     leftCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==2:#right
                     rightCount+=1
+                    stepCounterIntersection += 2
                 if direction==4:#AI comes from top
                     upCount-=1
+                    stepCounterIntersection += 2
                 if direction==3:#AI comes from right
                     rightCount-=1
+                    stepCounterIntersection += 2
                 if direction==2:#AI comes from left
                     leftCount-=1
-            if checkSurround(blue)==3:#AI faces right
-                #-print("addCount-AI right")#debug
+                    stepCounterIntersection += 2
+            if checkSurround(blue, stepCounterIntersection)==3:#AI faces right
+                stepCounterIntersection += 1
                 if directionMove==2:#right
                     upCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==1:#up
                     leftCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==4:#down
                     rightCount+=1
+                    stepCounterIntersection += 2
                 if direction==3:#AI comes from right
                     upCount-=1
+                    stepCounterIntersection += 2
                 if direction==1:#AI comes from bottom
                     rightCount-=1
+                    stepCounterIntersection += 2
                 if direction==4:#AI comes from top
                     leftCount-=1
-            if checkSurround(blue)==2:#AI faces left
-                #-print("addCount-AI left")#debug
+                    stepCounterIntersection += 2
+            if checkSurround(blue, stepCounterIntersection)==2:#AI faces left
+                stepCounterIntersection += 1
                 if directionMove==3:#left
                     upCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==4:#down
                     leftCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==1:#up
                     rightCount+=1
+                    stepCounterIntersection += 2
                 if direction==2:#AI comes from left
                     upCount-=1
+                    stepCounterIntersection += 2
                 if direction==4:#AI comes from top
                     rightCount-=1
+                    stepCounterIntersection += 2
                 if direction==1:#AI comes from bottom
                     leftCount-=1
-            if checkSurround(blue)==1:#AI faces down
-                #-print("addCount-AI down")#debug
+                    stepCounterIntersection += 2
+            if checkSurround(blue, stepCounterIntersection)==1:#AI faces down
+                stepCounterIntersection += 1
                 if directionMove==4:#down
                     upCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==2:#right
                     leftCount+=1
+                    stepCounterIntersection += 2
                 if directionMove==3:#left
                     rightCount+=1
+                    stepCounterIntersection += 2
                 if direction==1:#AI comes from bottom
                     upCount-=1
+                    stepCounterIntersection += 2
                 if direction==2:#AI comes from left
                     rightCount-=1
+                    stepCounterIntersection += 2
                 if direction==3:#AI comes from right
                     leftCount-=1
+                    stepCounterIntersection += 2
 
-def turnAround(facing):
+def turnAround(facing, steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
+    stepCounterIntersection += 1
     if facing==1:
         direction=4
+        stepCounterIntersection += 2
     elif facing==2:
         direction=3
+        stepCounterIntersection += 2
     elif facing==3:
         direction=2
+        stepCounterIntersection += 2
     elif facing==4:
         direction=1
-def moveForward(color):
+        stepCounterIntersection += 2
+
+def moveForward(color, steps):
     global direction
+    global stepCounterIntersection
+    stepCounterIntersection = steps
+    stepCounterIntersection += 1
     if direction==1:
         moveUp(currentX,currentY,blockSize,color)
+        stepCounterIntersection += 2
     elif direction==2:
         moveRight(currentX,currentY,blockSize,color)
+        stepCounterIntersection += 2
     elif direction==3:
         moveLeft(currentX,currentY,blockSize,color)
+        stepCounterIntersection += 2
     elif direction==4:
         moveDown(currentX,currentY,blockSize,color)
+        stepCounterIntersection += 2
 
 intersectionX=[]
 intersectionY=[]
+blueIntX=[]
+blueIntY=[]
 intersectionNum=0
+redDirection=0
+stepCounterIntersection += 6
 # Check if all paths of an intersection have been travelled. If so, go back on red
-
-stepCounterIntersection = 0
-
-def intersection(isInt,firstTime):
-    global direction, upCount, rightCount, leftCount, intersectionX,intersectionY, intersectionNum
-    
+def intersection(isInt,firstTime, steps):
+    global direction, upCount, rightCount, leftCount, intersectionX,intersectionY,blueIntX,blueIntY, intersectionNum, redDirection
+    global stepCounterIntersection
+    stepCounterIntersection = steps
+    finished=False
+    stepCounterIntersection += 1
     if firstTime:#if first time at intersection, then add x/y cordinates of red
+        stepCounterIntersection += 1
         if direction==1:#facing up
             intersectionX.append(currentX)
             intersectionY.append(currentY+blockSize)
+            stepCounterIntersection += 3
         elif direction==2:#facing right
             intersectionX.append(currentX-blockSize)
             intersectionY.append(currentY)
+            stepCounterIntersection += 3
         elif direction==3:#facing left
             intersectionX.append(currentX+blockSize)
             intersectionY.append(currentY)
+            stepCounterIntersection += 3
         elif direction==4:#facing down
             intersectionX.append(currentX)
             intersectionY.append(currentY-blockSize)
-    #print("X-",intersectionX)
-    #print(" y-",intersectionY)
-    #pygame.draw.rect(newscreen, (100,100,100), pygame.Rect(currentX-blockSize, currentY-blockSize, blockSize, blockSize))
-    #print("intersectionNum",intersectionNum)
-    #-time.sleep(2)#debug-sleep
-    
-    
-    if newscreen.get_at((currentX, currentY - blockSize)) == white:#up
-        addCount(isInt,1,firstTime)
-        direction = 1
-        moveUp(currentX, currentY, blockSize, blue)
-        #print("int-move-up")
-    elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
-        addCount(isInt,2,firstTime)
-        direction = 2
-        moveRight(currentX, currentY, blockSize, blue)
-        #print("int-move-right")
-    elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
-        addCount(isInt,3,firstTime)
-        direction = 3
-        moveLeft(currentX, currentY, blockSize, blue)
-        #print("int-move-left")
-    elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
-        addCount(isInt,4,firstTime)
-        direction = 4
-        moveDown(currentX, currentY, blockSize, blue)
-        #print("int-move-down")
-    else:
-        if checkSurround(red)==5:#more than 1 red path
-            #print("more than 1 red path")
-            for z in range(0,len(intersectionX)):
-                if intersectionX[z]==currentX-blockSize:#left
-                    #print("more than 1 red-left")
-                    if intersectionY[z]==currentY:
-                        if z!=len(intersectionY):#intersections traveled after this one are not completed
-                            turnAround(direction)
-                            addCount(isInt,direction,firstTime)
-                            moveForward(blue)
-                            #print("int-to red-left-turn around")
-                        else:
-                            addCount(isInt,3,firstTime)
-                            direction=3
-                            moveLeft(currentX,currentY,blockSize,blue)
-                            #print("int-to red-left")
-                        break
-                elif intersectionX[z]==currentX+blockSize:#right
-                    #print("more than 1 red-right")
-                    if intersectionY[z]==currentY:
-                        if z!=len(intersectionY):#intersections traveled after this one are not completed
-                            turnAround(direction)
-                            addCount(isInt,direction,firstTime)
-                            moveForward(blue)
-                            #print("int-to red-right-turn around")
-                        else:
-                            addCount(isInt,2,firstTime)
-                            direction=2
-                            moveRight(currentX,currentY,blockSize,blue)
-                            #print("int-to red-right")
-                        break
-                elif intersectionY[z]==currentY-blockSize:#up
-                    #print("more than 1 red-up")
-                    if intersectionX[z]==currentX:
-                        #print("intersectionX[z]",intersectionX[z])
-                        #print("currentX",currentX)
-                        if z!=len(intersectionX):#intersections traveled after this one are not completed
-                            #print("z!=last value of intersection[]")
-                            turnAround(direction)
-                            addCount(isInt, direction,firstTime)
-                            moveForward(blue)
-                            #print("int-to red-up-turn around")
-                        else:
-                            addCount(isInt,1,firstTime)
-                            direction=1
-                            moveUp(currentX,currentY,blockSize,blue)
-                            #print("int-to red-up")
-                        break
-                elif intersectionY[z]==currentY+blockSize:#down
-                    #print("more than 1 red-down")
-                    if intersectionX[z]==currentX:
-                        #print("intersectionX[z]",intersectionX[z])
-                        #print("currentX",currentX)
-                        if z!=len(intersectionX):#intersections traveled after this one are not completed
-                            #print("z!=last value of intersection[]")
-                            #print("direction",direction)
-                            turnAround(direction)
-                            addCount(isInt,direction,firstTime)
-                            moveForward(blue)
-                            #print("int-to red-down-turn around")
-                        else:
-                            addCount(isInt,4,firstTime)
-                            direction=4
-                            moveDown(currentX,currentY,blockSize,blue)
-                            #print("int-to red-down")
-                        break
-            #print("z-",z)
-        elif checkSurround(red) == 0:#no red
-            if newscreen.get_at((currentX, currentY - blockSize)) == blue:#up
-                addCount(isInt,1,firstTime)
+            stepCounterIntersection += 3
+        blueIntX=[].append(currentX)
+        blueIntY=[].append(currentY)
+        stepCounterIntersection += 2
+        
+    for z in range(0,len(intersectionX)):#go through array of intersections
+        #====RED====
+        stepCounterIntersection += 1
+        if intersectionX[z]==currentX-blockSize and intersectionY[z]==currentY:#left
+            stepCounterIntersection += 1
+            if z!=len(intersectionX)-1:#if z is not last item in array, that means there are still incomplete intersections after this one
+                addCount(isInt,2,firstTime,stepCounterIntersection)
+                turnAround(direction, stepCounterIntersection)
+                moveForward(blue, stepCounterIntersection)
+                finished=True
+                stepCounterIntersection += 5
+                break
+        elif intersectionX[z]==currentX+blockSize and intersectionY[z]==currentY:#right
+            stepCounterIntersection += 1
+            if z!=len(intersectionX)-1:#intersections traveled after this one are not completed
+                addCount(isInt,3,firstTime, stepCounterIntersection)
+                turnAround(direction, stepCounterIntersection)
+                moveForward(blue, stepCounterIntersection)
+                finished=True
+                stepCounterIntersection += 5
+                break
+        elif intersectionY[z]==currentY-blockSize and intersectionX[z]==currentX:#up
+            stepCounterIntersection += 1
+            if z!=len(intersectionX)-1:#intersections traveled after this one are not completed
+                addCount(isInt, 4,firstTime, stepCounterIntersection)
+                turnAround(direction, stepCounterIntersection)
+                moveForward(blue,stepCounterIntersection)
+                finished=True
+                stepCounterIntersection += 5
+                break
+        elif intersectionY[z]==currentY+blockSize and intersectionX[z]==currentX:#down
+            stepCounterIntersection += 1
+            if z!=len(intersectionX)-1:#intersections traveled after this one are not completed
+                addCount(isInt,1,firstTime, stepCounterIntersection)
+                turnAround(direction, stepCounterIntersection)
+                moveForward(blue, stepCounterIntersection)
+                finished=True
+                stepCounterIntersection += 5
+                break
+
+    if checkSurround(white, stepCounterIntersection)!=0:#white(untraveled) paths still present
+        stepCounterIntersection += 1
+        if checkSurround(red, stepCounterIntersection)==1:
+            redDirection=4
+            stepCounterIntersection += 2
+        elif checkSurround(red, stepCounterIntersection)==2:
+            redDirection=3
+            stepCounterIntersection += 2
+        elif checkSurround(red, stepCounterIntersection)==3:
+            redDirection=2
+            stepCounterIntersection += 2
+        elif checkSurround(red, stepCounterIntersection)==4:
+            redDirection=1
+            stepCounterIntersection += 2
+        elif checkSurround(blue, stepCounterIntersection)==1:
+            redDirection=4
+            stepCounterIntersection += 2
+        elif checkSurround(blue, stepCounterIntersection)==2:
+            redDirection=3
+            stepCounterIntersection += 2
+        elif checkSurround(blue, stepCounterIntersection)==3:
+            redDirection=2
+            stepCounterIntersection += 2
+        elif checkSurround(blue, stepCounterIntersection)==4:
+            redDirection=1
+            stepCounterIntersection += 2
+
+        if redDirection==1:#if AI facing up/red on bottom
+            stepCounterIntersection += 1
+            if upMem>=leftMem and upMem>=rightMem and newscreen.get_at((currentX, currentY - blockSize)) == white:#up
+                addCount(isInt,1,firstTime, stepCounterIntersection)
                 direction = 1
                 moveUp(currentX, currentY, blockSize, blue)
-                del intersectionX[intersectionNum-1]
-                del intersectionY[intersectionNum-1]
-                intersectionNum-=1
-            elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
-                addCount(isInt,2,firstTime)
-                direction=2
+                stepCounterIntersection += 4
+            elif rightMem>=upMem and rightMem>=leftMem and newscreen.get_at((currentX + blockSize, currentY)) == white:#right
+                addCount(isInt,2,firstTime, stepCounterIntersection)
+                direction = 2
                 moveRight(currentX, currentY, blockSize, blue)
-                del intersectionX[intersectionNum-1]
-                del intersectionY[intersectionNum-1]
-                intersectionNum-=1
-            elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
-                addCount(isInt,3,firstTime)
-                direction=3
+                stepCounterIntersection += 4
+            elif leftMem>=upMem and leftMem>=rightMem and newscreen.get_at((currentX - blockSize, currentY)) == white:#left
+                addCount(isInt,3,firstTime, stepCounterIntersection)
+                direction = 3
                 moveLeft(currentX, currentY, blockSize, blue)
-                del intersectionX[intersectionNum-1]
-                del intersectionY[intersectionNum-1]
-                intersectionNum-=1
-            elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
-                addCount(isInt,4,firstTime)
+                stepCounterIntersection += 4
+            else:
+                stepCounterIntersection += 1
+                if newscreen.get_at((currentX, currentY - blockSize)) == white:#up
+                    addCount(isInt,1,firstTime, stepCounterIntersection)
+                    direction = 1
+                    moveUp(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
+                    addCount(isInt,2,firstTime, stepCounterIntersection)
+                    direction = 2
+                    moveRight(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
+                    addCount(isInt,3,firstTime, stepCounterIntersection)
+                    direction = 3
+                    moveLeft(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+        elif redDirection==2:#right
+            stepCounterIntersection += 1
+            if upMem>=leftMem and upMem>=rightMem and newscreen.get_at((currentX + blockSize, currentY)) == white:#right
+                addCount(isInt,2,firstTime, stepCounterIntersection)
+                direction = 2
+                moveRight(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            elif rightMem>=upMem and rightMem>=leftMem and newscreen.get_at((currentX, currentY + blockSize)) == white:#down
+                addCount(isInt,4,firstTime, stepCounterIntersection)
                 direction = 4
                 moveDown(currentX, currentY, blockSize, blue)
-                del intersectionX[intersectionNum-1]
-                del intersectionY[intersectionNum-1]
-                intersectionNum-=1
-        elif checkSurround(red)==1:#red on top
-            addCount(isInt,1,firstTime)
+                stepCounterIntersection += 4
+            elif leftMem>=upMem and leftMem>=rightMem and newscreen.get_at((currentX, currentY - blockSize)) == white:#up
+                addCount(isInt,1,firstTime, stepCounterIntersection)
+                direction = 1
+                moveUp(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            else:
+                stepCounterIntersection += 1
+                if newscreen.get_at((currentX + blockSize, currentY)) == white:#right
+                    addCount(isInt,2,firstTime, stepCounterIntersection)
+                    direction = 2
+                    moveRight(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
+                    addCount(isInt,4,firstTime, stepCounterIntersection)
+                    direction = 4
+                    moveDown(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up
+                    addCount(isInt,1,firstTime, stepCounterIntersection)
+                    direction = 1
+                    moveUp(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+        elif redDirection==3:#left
+            stepCounterIntersection += 1
+            if upMem>=leftMem and upMem>=rightMem and newscreen.get_at((currentX - blockSize, currentY)) == white:#left
+                addCount(isInt,3,firstTime, stepCounterIntersection)
+                direction = 3
+                moveLeft(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            elif rightMem>=upMem and rightMem>=leftMem and newscreen.get_at((currentX, currentY - blockSize)) == white:#up
+                addCount(isInt,1,firstTime, stepCounterIntersection)
+                direction = 1
+                moveUp(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            elif leftMem>=upMem and leftMem>=rightMem and newscreen.get_at((currentX, currentY + blockSize)) == white:#down
+                addCount(isInt,4,firstTime, stepCounterIntersection)
+                direction = 4
+                moveDown(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            else:
+                stepCounterIntersection += 4
+                if newscreen.get_at((currentX - blockSize, currentY)) == white:#left
+                    addCount(isInt,3,firstTime, stepCounterIntersection)
+                    direction = 3
+                    moveLeft(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX, currentY - blockSize)) == white:#up
+                    addCount(isInt,1,firstTime, stepCounterIntersection)
+                    direction = 1
+                    moveUp(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX, currentY + blockSize)) == white:#down
+                    addCount(isInt,4,firstTime, stepCounterIntersection)
+                    direction = 4
+                    moveDown(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+        elif redDirection==4:#down
+            stepCounterIntersection += 1
+            if upMem>=leftMem and upMem>=rightMem and newscreen.get_at((currentX, currentY + blockSize)) == white:#down
+                addCount(isInt,4,firstTime, stepCounterIntersection)
+                direction = 4
+                moveDown(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            elif rightMem>=upMem and rightMem>=leftMem and newscreen.get_at((currentX - blockSize, currentY)) == white:#left
+                addCount(isInt,3,firstTime, stepCounterIntersection)
+                direction = 3
+                moveLeft(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            elif leftMem>=upMem and leftMem>=rightMem and newscreen.get_at((currentX + blockSize, currentY)) == white:#right
+                addCount(isInt,2,firstTime, stepCounterIntersection)
+                direction = 2
+                moveRight(currentX, currentY, blockSize, blue)
+                stepCounterIntersection += 4
+            else:
+                stepCounterIntersection += 1
+                if newscreen.get_at((currentX, currentY + blockSize)) == white:#down
+                    addCount(isInt,4,firstTime, stepCounterIntersection)
+                    direction = 4
+                    moveDown(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX - blockSize, currentY)) == white:#left
+                    addCount(isInt,3,firstTime, stepCounterIntersection)
+                    direction = 3
+                    moveLeft(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                elif newscreen.get_at((currentX + blockSize, currentY)) == white:#right
+                    addCount(isInt,2,firstTime, stepCounterIntersection)
+                    direction = 2
+                    moveRight(currentX, currentY, blockSize, blue)
+                    stepCounterIntersection += 4
+                    
+    elif finished==False and checkSurround(red, stepCounterIntersection) == 0:#no red
+        stepCounterIntersection += 1
+        if newscreen.get_at((currentX, currentY - blockSize)) == blue:#up
+            addCount(isInt,1,firstTime, stepCounterIntersection)
             direction = 1
             moveUp(currentX, currentY, blockSize, blue)
             del intersectionX[intersectionNum-1]
             del intersectionY[intersectionNum-1]
             intersectionNum-=1
-        elif checkSurround(red)==2:#red on right
-            addCount(isInt,2,firstTime)
-            direction = 2
+            stepCounterIntersection += 7
+        elif newscreen.get_at((currentX + blockSize, currentY)) == blue:#right
+            addCount(isInt,2,firstTime, stepCounterIntersection)
+            direction=2
             moveRight(currentX, currentY, blockSize, blue)
             del intersectionX[intersectionNum-1]
             del intersectionY[intersectionNum-1]
             intersectionNum-=1
-        elif checkSurround(red)==3:#red on left
-            addCount(isInt,3,firstTime)
-            direction = 3
+            stepCounterIntersection += 7
+        elif newscreen.get_at((currentX - blockSize, currentY)) == blue:#left
+            addCount(isInt,3,firstTime, stepCounterIntersection)
+            direction=3
             moveLeft(currentX, currentY, blockSize, blue)
             del intersectionX[intersectionNum-1]
             del intersectionY[intersectionNum-1]
             intersectionNum-=1
-        elif checkSurround(red)==4:#red on bottom
-            addCount(isInt,4,firstTime)
+            stepCounterIntersection += 7
+        elif newscreen.get_at((currentX, currentY + blockSize)) == blue:#down
+            addCount(isInt,4,firstTime, stepCounterIntersection)
             direction = 4
             moveDown(currentX, currentY, blockSize, blue)
             del intersectionX[intersectionNum-1]
             del intersectionY[intersectionNum-1]
             intersectionNum-=1
-            
-        '''
-        print("intersection-length",len(intersectionX))
-        print("intersectionX",intersectionX[intersectionNum-1])
-        print("currentX",currentX)
-        if intersectionX[intersectionNum-1]>currentX:#left
-            addCount(isInt,3,firstTime)
-            direction=3
-            moveLeft(currentX,currentY,blockSize,blue)
-            print("GHASJFHFJWHAUJSHFWAHSDJNWAJSKFJWHANMSDKWASIJD")
-            '''
-        
-        
-            
-        #-time.sleep(5)#debug-sleep
+            stepCounterIntersection += 7
+    elif checkSurround(red, stepCounterIntersection)==1:#red on top
+        addCount(isInt,1,firstTime, stepCounterIntersection)
+        direction = 1
+        moveUp(currentX, currentY, blockSize, blue)
+        del intersectionX[intersectionNum-1]
+        del intersectionY[intersectionNum-1]
+        intersectionNum-=1
+        stepCounterIntersection += 7
+    elif checkSurround(red, stepCounterIntersection)==2:#red on right
+        addCount(isInt,2,firstTime, stepCounterIntersection)
+        direction = 2
+        moveRight(currentX, currentY, blockSize, blue)
+        del intersectionX[intersectionNum-1]
+        del intersectionY[intersectionNum-1]
+        intersectionNum-=1
+        stepCounterIntersection += 7
+    elif checkSurround(red, stepCounterIntersection)==3:#red on left
+        addCount(isInt,3,firstTime, stepCounterIntersection)
+        direction = 3
+        moveLeft(currentX, currentY, blockSize, blue)
+        del intersectionX[intersectionNum-1]
+        del intersectionY[intersectionNum-1]
+        intersectionNum-=1
+        stepCounterIntersection += 7
+    elif checkSurround(red, stepCounterIntersection)==4:#red on bottom
+        addCount(isInt,4,firstTime, stepCounterIntersection)
+        direction = 4
+        moveDown(currentX, currentY, blockSize, blue)
+        del intersectionX[intersectionNum-1]
+        del intersectionY[intersectionNum-1]
+        intersectionNum-=1
+        stepCounterIntersection += 7
 
 # ------------- OUR ALGORITHM -------------
 start = datetime.now()
-
 skipIntersection = False
-while 0 != currentY and skipIntersection==False:
+while 0 != currentY and skipIntersection == False:
     pygame.event.get()
+    stepCounterIntersection += 4
+#for x in range(0,10):
     getCur = newscreen.get_at((currentX, currentY))
-    isInt=isIntersection()
-    stepCounterIntersection += 1
+    isInt=isIntersection(stepCounterIntersection)
     if direction == 1:#up
+        stepCounterIntersection += 1
         if isInt:
+            stepCounterIntersection += 1
             if getCur == blue:#blue=intersection tile
                 moveDown(currentX, currentY, blockSize, blue)
                 moveUp(currentX, currentY, blockSize, green)#green=used path
-                intersection(isInt,False)
+                intersection(isInt,False, stepCounterIntersection)
+                stepCounterIntersection += 4
             else:
+                stepCounterIntersection += 1
                 if newscreen.get_at((currentX, currentY + blockSize)) != blue:#down
+                    stepCounterIntersection += 2
                     pygame.draw.rect(newscreen, red, pygame.Rect(currentX, currentY+blockSize, blockSize, blockSize))#set red path into intersection
                 pygame.draw.rect(newscreen, blue, pygame.Rect(currentX, currentY, blockSize, blockSize))#set current space to blue
                 intersectionNum+=1
-                intersection(isInt,True)
+                intersection(isInt,True, stepCounterIntersection)
+                stepCounterIntersection += 3
         else:
+            stepCounterIntersection += 1
             if newscreen.get_at((currentX, currentY - blockSize)) == blue:
                 moveUp(currentX, currentY, blockSize, white)
+                stepCounterIntersection += 2
             else:
-                up(white)
+                stepCounterIntersection += 2
+                up(white, stepCounterIntersection)
     elif direction == 2:#right
+        stepCounterIntersection += 1
         if isInt:
+            stepCounterIntersection += 1
             if getCur == blue:#blue=intersection tile
+                stepCounterIntersection += 4
                 moveLeft(currentX, currentY, blockSize, blue)
                 moveRight(currentX, currentY, blockSize, green)#green=used path
-                intersection(isInt,False)
+                intersection(isInt,False, stepCounterIntersection)
             else:
+                stepCounterIntersection += 1
                 if newscreen.get_at((currentX-blockSize, currentY)) != blue:#left
+                    stepCounterIntersection += 3
                     pygame.draw.rect(newscreen, red, pygame.Rect(currentX-blockSize, currentY, blockSize, blockSize))#set red path into intersection
                 pygame.draw.rect(newscreen, blue, pygame.Rect(currentX, currentY, blockSize, blockSize))#set current space to blue
                 intersectionNum+=1
-                intersection(isInt,True)
+                intersection(isInt,True, stepCounterIntersection)
+                stepCounterIntersection += 3
         else:
+            stepCounterIntersection += 1
             if newscreen.get_at((currentX + blockSize, currentY)) == blue:
                 moveRight(currentX, currentY, blockSize, white)
+                stepCounterIntersection += 2
             else:
-                right(white)
+                right(white, stepCounterIntersection)
+                stepCounterIntersection += 2
     elif direction == 3:#left
+        stepCounterIntersection += 1
         if isInt:
+            stepCounterIntersection += 1
             if getCur == blue:#blue=intersection tile
                 moveRight(currentX, currentY, blockSize, blue)
                 moveLeft(currentX, currentY, blockSize, green)#green=used path
-                intersection(isInt,False)
+                intersection(isInt,False,stepCounterIntersection)
+                stepCounterIntersection += 4
             else:
+                stepCounterIntersection += 1
                 if newscreen.get_at((currentX+blockSize, currentY)) != blue:#right
+                    stepCounterIntersection += 2
                     pygame.draw.rect(newscreen, red, pygame.Rect(currentX+blockSize, currentY, blockSize, blockSize))#set red path into intersection
                 pygame.draw.rect(newscreen, blue, pygame.Rect(currentX, currentY, blockSize, blockSize))#set current space to blue
                 intersectionNum+=1
-                intersection(isInt,True)
+                intersection(isInt,True,stepCounterIntersection)
+                stepCounterIntersection += 3
         else:
+            stepCounterIntersection += 1
             if newscreen.get_at((currentX - blockSize, currentY)) == blue:
                 moveLeft(currentX, currentY, blockSize, white)
+                stepCounterIntersection += 2
             else:
-                left(white)
+                left(white, stepCounterIntersection)
+                stepCounterIntersection += 2
     elif direction == 4:#down
+        stepCounterIntersection += 1
         if isInt:
+            stepCounterIntersection += 1
             if getCur == blue:#blue=intersection tile
                 moveUp(currentX, currentY, blockSize, blue)
                 moveDown(currentX, currentY, blockSize, green)#green=used path               
-                intersection(isInt,False)
+                intersection(isInt,False,stepCounterIntersection)
+                stepCounterIntersection += 4
             else:
+                stepCounterIntersection += 1
                 if newscreen.get_at((currentX, currentY - blockSize)) != blue:#up
                     pygame.draw.rect(newscreen, red, pygame.Rect(currentX, currentY-blockSize, blockSize, blockSize))#set red path into intersection
                 pygame.draw.rect(newscreen, blue, pygame.Rect(currentX, currentY, blockSize, blockSize))#set current space to blue
                 intersectionNum+=1
-                intersection(isInt,True)
+                intersection(isInt,True,stepCounterIntersection)
+                stepCounterIntersection += 3
         else:
+            stepCounterIntersection += 1
             if newscreen.get_at((currentX, currentY + blockSize)) == blue:
                 moveDown(currentX, currentY, blockSize, white)
+                stepCounterIntersection += 2
             else:
-                down(white)
+                down(white, stepCounterIntersection)
+                stepCounterIntersection += 2
     for event in pygame.event.get():
         # This lets you quit by pressing the X button of the window.
         if event.type == pygame.QUIT:
@@ -1718,14 +2103,25 @@ while 0 != currentY and skipIntersection==False:
                 if 415 <= x <= 532 and 494 <= y <= 532:
                     skipIntersection = True
 
+#print("FRONT PATH CHOSEN",upCount,"TIMES")
+#print("LEFT PATH CHOSEN",leftCount,"TIMES")
+#print("RIGHT PATH CHOSEN",rightCount,"TIMES")
+
 for z in range(0,intersectionNum):
-    stepCounterIntersection += 1
     pygame.draw.rect(newscreen, (100,100,100), pygame.Rect(intersectionX[z], intersectionY[z], blockSize, blockSize))
     screen.blit(newscreen, (0,0))
     pygame.display.update()
-    #print("for number",z)
+    stepCounterIntersection += 4
+
+#update memory(pathCount.txt) by adding currentMaze's count(upCount,leftCount,rightCount) to memory count(up,left,right)
+f=open('pathCount.txt','w')
+count=str(upCount+upMem)+"U"+str(leftCount+leftMem)+"L"+str(rightCount+rightMem)+"R"
+f.write(count)
+f.close()
+stepCounterIntersection += 4
 
 timeIntersection = datetime.now() - start
+
 time.sleep(1)
 
 #================Solution SCREEN==============
@@ -1735,7 +2131,7 @@ screen.blit(newscreen, (0,0))
 pygame.display.update()
 time.sleep(2)
 
-#================================================Solution==========================================
+#==========================================Solution=====================================
 # Initialize
 img = Image.open(maze)
 change = 3
@@ -2075,6 +2471,8 @@ for i in range(0,stepsLength):
                     screen.blit(text15,(320,location))
                     screen.blit(text16,(340,location + 30))
                     location += 60
+
+
 
 pygame.display.update()
 while True: 
